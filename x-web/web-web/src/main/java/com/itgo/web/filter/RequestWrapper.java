@@ -20,7 +20,6 @@ import java.io.*;
  * @date 2019/4/8 15:56
  * @description
  */
-@Component
 public class RequestWrapper extends HttpServletRequestWrapper {
 
     private Logger logger = LoggerFactory.getLogger(RequestWrapper.class);

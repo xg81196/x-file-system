@@ -2,6 +2,7 @@ package com.itgo.web.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @date 2019/4/8 16:19
  * @description
  */
+@Component
 @WebFilter(urlPatterns = "/*",filterName = "allFilter")
 public class AllFilter implements Filter {
 
