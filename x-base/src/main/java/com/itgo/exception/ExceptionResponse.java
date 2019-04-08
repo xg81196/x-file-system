@@ -15,7 +15,7 @@ import java.util.Date;
  * @description
  *      校验参数异常返回对象
  */
-public class ExceptionResponse {
+public class ExceptionResponse<T> {
 
 
     private static final String PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -23,12 +23,29 @@ public class ExceptionResponse {
     private int code;
     private String message;
     private String timestamp;
+    private T returnData;
+    private String path;
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public ExceptionResponse(int code, String message, Date date) {
         this.code = code;
         this.message = message;
         this.timestamp =  new SimpleDateFormat(PATTERN).format(date);
+    }
+
+    public ExceptionResponse(int code, String message, Date date,T returnData,String path) {
+        this.code = code;
+        this.message = message;
+        this.timestamp =  new SimpleDateFormat(PATTERN).format(date);
+        this.returnData = returnData;
+        this.path = path;
     }
 
     public ExceptionResponse(int code, String message) {
@@ -38,6 +55,15 @@ public class ExceptionResponse {
     }
 
     public ExceptionResponse() {
+    }
+
+
+    public T getReturnData() {
+        return returnData;
+    }
+
+    public void setReturnData(T returnData) {
+        this.returnData = returnData;
     }
 
     public int getCode() {
