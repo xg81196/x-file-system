@@ -1,14 +1,17 @@
 package com.itgo.web.main;
 
 import com.itgo.utils.BeanUtil;
+import com.itgo.web.config.WebApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Import;
 
 /**
  * Create by xb
@@ -24,6 +27,8 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"com.itgo.service.base.api"})
 @ComponentScan(basePackages = {"com.itgo.web","com.itgo.utils","com.itgo.bean"})
+@ServletComponentScan
+@Import(WebApplicationConfig.class)
 public class WebApplication {
 
     private static Logger logger = LoggerFactory.getLogger(WebApplication.class);
@@ -33,7 +38,8 @@ public class WebApplication {
         //设置上下文
         BeanUtil.setApplicationContext(run);
         logger.info("web  start success");
-
     }
+
+
 
 }
