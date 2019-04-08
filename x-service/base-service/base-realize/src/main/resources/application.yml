@@ -1,0 +1,36 @@
+debug: true
+#
+#spring:
+#  application:
+#    name: ${server.name.base}
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    password: 12345
+#    url: jdbc:mysql://localhost:3306/test?useSSL=true
+#    username: test
+#    sql-script-encoding: UTF-8
+#  http:
+#    encoding:
+#      charset: utf-8
+#      enabled: true
+#
+#server:
+#  port: ${server.port.base}
+#  tomcat:
+#    uri-encoding: UTF-8
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#
+#logging:
+#  level:
+#    com:
+#      example:
+#        booksystem:
+#          repository:
+#            BookInfoMapper: TRACE
+#
+#mybatis:
+#  mapperLocations: classpath*:/mappers/*.xml
+

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itgo.service.base.realize.mapper.DictionaryMapper">
+
+    <resultMap id="baseResultMap" type="com.itgo.service.base.realize.bean.base.Dictionary">
+        <id column="id" property="id" javaType="java.lang.Long" jdbcType="BIGINT"/>
+        <result column="CODE_TYPE" property="codeType"  jdbcType="VARCHAR"/>
+        <result column="CODE_NAME" property="codeName"  jdbcType="VARCHAR"/>
+        <result column="SORT" property="sort" jdbcType="BIGINT"/>
+        <!--元数据-->
+        <result column="CREATE_USER" property="createUser" jdbcType="BIGINT"/>
+        <result column="CREATE_NAME" property="createName" jdbcType="VARCHAR"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_IP"   property="createIp"   jdbcType="VARCHAR"/>
+        <result column="UPDATE_USER" property="updateUser" jdbcType="BIGINT"/>
+        <result column="UPDATE_NAME" property="updateName" jdbcType="VARCHAR"/>
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_IP"   property="updateIp"   jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        id,
+        CODE_TYPE,
+        CODE_NAME,
+        SORT,
+        CREATE_USER,
+        CREATE_NAME,
+        CREATE_DATE,
+        CREATE_IP,
+        UPDATE_USER,
+        UPDATE_NAME,
+        UPDATE_DATE,
+        UPDATE_IP
+    </sql>
+
+    <sql id="INSERT_SQL">
+        CODE_TYPE
+        CODE_NAME,
+        SORT,
+        CREATE_USER,
+        CREATE_NAME,
+        CREATE_DATE,
+        CREATE_IP,
+        UPDATE_USER,
+        UPDATE_NAME,
+        UPDATE_DATE,
+        UPDATE_IP
+    </sql>
+
+    <select id="find" parameterType="com.itgo.service.base.realize.bean.base.Dictionary" resultMap="baseResultMap"  useCache="false">
+        SELECT 
+            <include refid="BASE_SQL"></include>
+        FROM
+            base_dictionary
+        <where>
+            <if test="codeType != null and codeType != '' ">
+                AND
+                CODE_TYPE = #{codeType}
+            </if>
+            <if test="codeName != null and codeName != '' ">
+                AND
+                CODE_NAME LIKE CONCAT('%',#{codeName},'%')
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findByParams" parameterType="java.util.Map" resultMap="baseResultMap">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+            base_dictionary
+        <where>
+            <if test="id != null">
+                AND
+                id = #{id}
+            </if>
+            <if test="codeType != null and codeType != '' ">
+                AND
+                CODE_TYPE = #{codeType}
+            </if>
+            <if test="codeName != null and codeName != '' ">
+                AND
+                CODE_NAME LIKE CONCAT('%',#{codeName},'%')
+            </if>
+            <if test="createUser != null ">
+                AND
+                CREATE_USER = #{createUser}
+            </if>
+            <if test="createName != null and createName != '' ">
+                AND
+                CREATE_NAME = #{createName}
+            </if>
+            <if test="createDate != null ">
+                AND
+                CREATE_DATE = #{createDate}
+            </if>
+            <if test="createIp != null and createIp != '' ">
+                AND
+                CREATE_IP = #{createIp}
+            </if>
+            <if test="updateUser != null ">
+                AND
+                UPDATE_USER = #{updateUser}
+            </if>
+            <if test="updateName != null and updateName != '' ">
+                AND
+                UPDATE_NAME = #{updateName}
+            </if>
+            <if test="updateDate != null ">
+                AND
+                UPDATE_DATE = #{updateDate}
+            </if>
+            <if test="updateIp != null and updateIp != '' ">
+                AND
+                UPDATE_IP = #{createIp}
+            </if>
+        </where>
+            <if test="sort == 1">
+                ORDER BY SORT
+            </if>
+    </select>
+
+    <select id="findById" resultMap="baseResultMap" parameterType="java.lang.Long">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+            base_dictionary
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="findByPage" parameterType="java.util.Map" resultMap="baseResultMap"  useCache="false">
+        SELECT
+        <include refid="BASE_SQL"></include>
+        FROM
+        base_dictionary
+        <where>
+            <if test="codeType != null and codeType != '' ">
+                AND
+                CODE_TYPE = #{codeType}
+            </if>
+            <if test="codeName != null and codeName != '' ">
+                AND
+                CODE_NAME LIKE CONCAT('%',#{codeName},'%')
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findByPage2" parameterType="com.itgo.service.base.realize.bean.base.Dictionary" resultMap="baseResultMap"  useCache="false">
+        SELECT
+        <include refid="BASE_SQL"></include>
+        FROM
+        base_dictionary
+        <where>
+            <if test="codeType != null and codeType != '' ">
+                AND
+                CODE_TYPE = #{codeType}
+            </if>
+            <if test="codeName != null and codeName != '' ">
+                AND
+                CODE_NAME LIKE CONCAT('%',#{codeName},'%')
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" keyColumn="id" parameterType="com.itgo.service.base.realize.bean.base.Dictionary">
+        INSERT INTO
+            base_dictionary
+            <include refid="INSERT_SQL"></include>
+        values (
+            #{codeType,jdbcType=VARCHAR},
+            #{codeName,jdbcType=VARCHAR},
+            #{sort,jdbcType=BIGINT},
+            #{createUser,jdbcType=BIGINT},
+            #{createName,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{createIp,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=BIGINT},
+            #{updateName,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{updateIp,jdbcType=VARCHAR}
+        )
+    </insert>
+
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(*) FROM base_dictionary
+    </select>
+
+
+</mapper>

@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.itgo.service.base.realize.mapper.BookInfoMapper">
+
+    <resultMap id="baseResultMap" type="com.itgo.service.base.realize.bean.base.BookInfo">
+        <id column="id" property="id"/>
+        <result column="book_code" property="bookCode"/>
+        <result column="book_name" property="bookName"/>
+        <result column="book_type" property="bookType"/>
+        <result column="book_author" property="bookAuthor"/>
+        <result column="publish_press" property="publishPress"/>
+        <result column="publish_date" property="publishDate" jdbcType="TIMESTAMP"/>
+        <!--元数据-->
+        <result column="CREATE_USER" property="createUser" jdbcType="BIGINT"/>
+        <result column="CREATE_NAME" property="createName" jdbcType="VARCHAR"/>
+        <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_IP"   property="createIp"   jdbcType="VARCHAR"/>
+        <result column="UPDATE_USER" property="updateUser" jdbcType="BIGINT"/>
+        <result column="UPDATE_NAME" property="updateName" jdbcType="VARCHAR"/>
+        <result column="UPDATE_DATE" property="updateDate" jdbcType="TIMESTAMP"/>
+        <result column="UPDATE_IP"   property="updateIp"   jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="BASE_SQL">
+        id,
+        book_code,
+        book_name,
+        book_type,
+        book_author,
+        publish_press,
+        publish_date,
+        CREATE_USER,
+        CREATE_NAME,
+        CREATE_DATE,
+        CREATE_IP,
+        UPDATE_USER,
+        UPDATE_NAME,
+        UPDATE_DATE,
+        UPDATE_IP
+    </sql>
+
+    <sql id="INSERT_SQL">
+        book_code,
+        book_name,
+        book_type,
+        book_author,
+        publish_press,
+        publish_date,
+        CREATE_USER,
+        CREATE_NAME,
+        CREATE_DATE,
+        CREATE_IP,
+        UPDATE_USER,
+        UPDATE_NAME,
+        UPDATE_DATE,
+        UPDATE_IP
+    </sql>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(*) FROM book_info
+    </select>
+
+    <select id="find" parameterType="com.itgo.service.base.realize.bean.base.BookInfo" resultMap="baseResultMap"  useCache="false">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+            book_info
+        <where>
+            <if test="bookCode != null and bookCode != '' ">
+                AND
+                book_code = #{bookCode}
+            </if>
+            <if test="bookName != null and bookName != '' ">
+                AND
+                book_name LIKE CONCAT('%',#{bookName},'%')
+            </if>
+            <if test="bookType != null and bookType != '' ">
+                AND
+                book_type = #{bookType}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != '' ">
+                AND
+                book_author LIKE CONCAT('%',#{bookAuthor},'%')
+            </if>
+            <if test="publishPress != null and publishPress != '' ">
+                AND
+                publish_press LIKE CONCAT('%',#{publishPress},'%')
+            </if>
+            <if test="publishDate != null ">
+                AND
+                publish_date = #{publishDate}
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findByParams" parameterType="java.util.Map" resultMap="baseResultMap">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+            book_info
+        <where>
+            <if test="id != null">
+                AND
+                id = #{id}
+            </if>
+            <if test="bookCode != null and bookCode != '' ">
+                AND
+                book_code = #{bookCode}
+            </if>
+            <if test="bookName != null and bookName != '' ">
+                AND
+                book_name LIKE CONCAT('%',#{bookName},'%')
+            </if>
+            <if test="bookType != null and bookType != '' ">
+                AND
+                book_type = #{bookType}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != '' ">
+                AND
+                book_author LIKE CONCAT('%',#{bookAuthor},'%')
+            </if>
+            <if test="publishPress != null and publishPress != '' ">
+                AND
+                publish_press LIKE CONCAT('%',#{publishPress},'%')
+            </if>
+            <if test="publishDate != null ">
+                AND
+                publish_date = #{publishDate}
+            </if>
+            <if test="createUser != null ">
+                AND
+                CREATE_USER = #{createUser}
+            </if>
+            <if test="createName != null and createName != '' ">
+                AND
+                CREATE_NAME = #{createName}
+            </if>
+            <if test="createDate != null ">
+                AND
+                CREATE_DATE = #{createDate}
+            </if>
+            <if test="createIp != null and createIp != '' ">
+                AND
+                CREATE_IP = #{createIp}
+            </if>
+            <if test="updateUser != null ">
+                AND
+                UPDATE_USER = #{updateUser}
+            </if>
+            <if test="updateName != null and updateName != '' ">
+                AND
+                UPDATE_NAME = #{updateName}
+            </if>
+            <if test="updateDate != null ">
+                AND
+                UPDATE_DATE = #{updateDate}
+            </if>
+            <if test="updateIp != null and updateIp != '' ">
+                AND
+                UPDATE_IP = #{createIp}
+            </if>
+        </where>
+        <if test="sort == 1">
+            ORDER BY SORT
+        </if>
+    </select>
+
+    <select id="findById" resultMap="baseResultMap" parameterType="java.lang.Long">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+            book_info
+        WHERE
+            id = #{id}
+    </select>
+
+    <select id="findByPage" parameterType="java.util.Map" resultMap="baseResultMap"  useCache="false">
+        SELECT
+            <include refid="BASE_SQL"></include>
+        FROM
+             book_info
+        <where>
+            <if test="bookCode != null and bookCode != '' ">
+                AND
+                book_code = #{bookCode}
+            </if>
+            <if test="bookName != null and bookName != '' ">
+                AND
+                book_name LIKE CONCAT('%',#{bookName},'%')
+            </if>
+            <if test="bookType != null and bookType != '' ">
+                AND
+                book_type = #{bookType}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != '' ">
+                AND
+                book_author LIKE CONCAT('%',#{bookAuthor},'%')
+            </if>
+            <if test="publishPress != null and publishPress != '' ">
+                AND
+                publish_press LIKE CONCAT('%',#{publishPress},'%')
+            </if>
+            <if test="publishDate != null ">
+                AND
+                publish_date = #{publishDate}
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+    <select id="findByPage2" parameterType="com.itgo.service.base.realize.bean.base.BookInfo" resultMap="baseResultMap"  useCache="false">
+        SELECT
+        <include refid="BASE_SQL"></include>
+        FROM
+        book_info
+        <where>
+            <if test="bookCode != null and bookCode != '' ">
+                AND
+                book_code = #{bookCode}
+            </if>
+            <if test="bookName != null and bookName != '' ">
+                AND
+                book_name LIKE CONCAT('%',#{bookName},'%')
+            </if>
+            <if test="bookType != null and bookType != '' ">
+                AND
+                book_type = #{bookType}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != '' ">
+                AND
+                book_author LIKE CONCAT('%',#{bookAuthor},'%')
+            </if>
+            <if test="publishPress != null and publishPress != '' ">
+                AND
+                publish_press LIKE CONCAT('%',#{publishPress},'%')
+            </if>
+            <if test="publishDate != null ">
+                AND
+                publish_date = #{publishDate}
+            </if>
+        </where>
+        <if test="pageNum != null and pageNum>0 and pageSize != null and pageSize>0">
+            <bind name="pageNum2" value="(pageNum-1)*pageSize"/>
+            LIMIT #{pageNum2},#{pageSize}
+        </if>
+    </select>
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true" keyColumn="id" parameterType="com.itgo.service.base.realize.bean.base.BookInfo">
+        INSERT INTO
+        book_info
+            <include refid="INSERT_SQL"></include>
+        values (
+            #{book_code,jdbcType=VARCHAR},
+            #{bookName,jdbcType=VARCHAR},
+            #{bookType,jdbcType=VARCHAR},
+            #{bookAuthor,jdbcType=VARCHAR},
+            #{publishPress,jdbcType=VARCHAR},
+            #{publishDate,jdbcType=TIMESTAMP},
+            #{createUser,jdbcType=BIGINT},
+            #{createName,jdbcType=VARCHAR},
+            #{createDate,jdbcType=TIMESTAMP},
+            #{createIp,jdbcType=VARCHAR},
+            #{updateUser,jdbcType=BIGINT},
+            #{updateName,jdbcType=VARCHAR},
+            #{updateDate,jdbcType=TIMESTAMP},
+            #{updateIp,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="insertList" keyProperty="id" useGeneratedKeys="true" keyColumn="id" parameterType="com.itgo.service.base.realize.bean.base.BookInfo">
+        INSERT INTO
+        book_info
+            <include refid="INSERT_SQL"></include>
+        values
+            <foreach collection="listData" item="item" index="index" separator=",">
+                (
+                #{item.book_code,jdbcType=VARCHAR},
+                #{item.bookName,jdbcType=VARCHAR},
+                #{item.bookType,jdbcType=VARCHAR},
+                #{item.bookAuthor,jdbcType=VARCHAR},
+                #{item.publishPress,jdbcType=VARCHAR},
+                #{item.publishDate,jdbcType=TIMESTAMP},
+                #{item.createUser,jdbcType=BIGINT},
+                #{item.createName,jdbcType=VARCHAR},
+                #{item.createDate,jdbcType=TIMESTAMP},
+                #{item.createIp,jdbcType=VARCHAR},
+                #{item.updateUser,jdbcType=BIGINT},
+                #{item.updateName,jdbcType=VARCHAR},
+                #{item.updateDate,jdbcType=TIMESTAMP},
+                #{item.updateIp,jdbcType=VARCHAR}
+                )
+            </foreach>
+
+    </insert>
+
+
+
+
+
+
+</mapper>
