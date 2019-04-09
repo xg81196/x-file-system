@@ -56,4 +56,11 @@ public class BaseDicVO extends BaseBeanVO {
     public void setSort(Integer sort) {
         this.sort = sort;
     }
+
+    public String check(){
+        if(super.getPageNum()==1){
+            return "页数不能小于1";
+        }
+        return "ok";
+    }
 }

@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Import;
 @EnableEurekaClient
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"com.itgo.service.base.api"})
-@ComponentScan(basePackages = {"com.itgo.web","com.itgo.utils","com.itgo.bean"})
+@ComponentScan(basePackages = {"com.itgo.web","com.itgo.utils","com.itgo.bean","com.itgo.aop"})
 @ServletComponentScan
 @Import(WebApplicationConfig.class)
 public class WebApplication {

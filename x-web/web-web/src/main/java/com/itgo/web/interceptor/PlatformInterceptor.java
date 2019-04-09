@@ -2,10 +2,10 @@ package com.itgo.web.interceptor;
 
 import com.itgo.utils.GsonUtil;
 import com.itgo.utils.IpUtil;
-import com.itgo.utils.ReflectionUtil;
 import com.itgo.utils.ServiceResponse;
 import com.itgo.utils.json.RequestData;
 import com.itgo.vo.BaseBeanVO;
+import org.apache.tomcat.jni.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -41,22 +44,31 @@ public class PlatformInterceptor implements HandlerInterceptor {
         logger.info("<===========来自客户端 {"+IpUtil.getIp()+"}的访问===========>");
         logger.info("<===========PlatformInterceptor.perHandle===========>");
         Method method = ((HandlerMethod) handler).getMethod();
-        Class<RequestData>[] types = (Class<RequestData>[]) method.getParameterTypes();
-        for (Class<RequestData> type : types) {
-            RequestData requestData = ReflectionUtil.getInstance(type);
-            BaseBeanVO data = requestData.getReqData();
-            String msg  = data.check();
-            if("ok".trim().equals(msg.trim())){
-                return true;
-            }else {
-                ServiceResponse<BaseBeanVO> serviceResponse = new ServiceResponse<>();
-                serviceResponse.setRetMessage(msg);
-                serviceResponse.setRetCode("500");
-                serviceResponse.setRetContent(null);
-                returnData(response,serviceResponse);
-                return false;
-            }
+        Parameter[] parameters = method.getParameters();
+        for (Parameter parameter : parameters) {
+
         }
+
+
+//        Class<RequestData>[] types = (Class<RequestData>[]) method.getParameterTypes();
+//        for (Class<RequestData> type : types) {
+//            Field field = type.getDeclaredField("reqData");
+//            field.setAccessible(true);
+//            System.out.println(field.getType());
+//            Object o = field.get(type);
+//            BaseBeanVO data = (BaseBeanVO)o;
+//            String msg  = data.check();
+//            if("ok".trim().equals(msg.trim())){
+//                return true;
+//            }else {
+//                ServiceResponse<BaseBeanVO> serviceResponse = new ServiceResponse<>();
+//                serviceResponse.setRetMessage(msg);
+//                serviceResponse.setRetCode("500");
+//                serviceResponse.setRetContent(null);
+//                returnData(response,serviceResponse);
+//                return false;
+//            }
+//        }
         return true;
     }
 
