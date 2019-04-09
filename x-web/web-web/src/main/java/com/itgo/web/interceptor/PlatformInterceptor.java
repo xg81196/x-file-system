@@ -1,16 +1,25 @@
 package com.itgo.web.interceptor;
 
-import com.itgo.handler.ControllerHandler;
+import com.itgo.utils.GsonUtil;
 import com.itgo.utils.IpUtil;
-import org.bouncycastle.util.IPAddress;
+import com.itgo.utils.ReflectionUtil;
+import com.itgo.utils.ServiceResponse;
+import com.itgo.utils.json.RequestData;
+import com.itgo.vo.BaseBeanVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Create by xb
@@ -29,9 +38,48 @@ public class PlatformInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("------来自客户端 "+IpUtil.getIp()+" 的访问");
+        logger.info("<===========来自客户端 {"+IpUtil.getIp()+"}的访问===========>");
+        logger.info("<===========PlatformInterceptor.perHandle===========>");
+        Method method = ((HandlerMethod) handler).getMethod();
+        Class<RequestData>[] types = (Class<RequestData>[]) method.getParameterTypes();
+        for (Class<RequestData> type : types) {
+            RequestData requestData = ReflectionUtil.getInstance(type);
+            BaseBeanVO data = requestData.getReqData();
+            String msg  = data.check();
+            if("ok".trim().equals(msg.trim())){
+                return true;
+            }else {
+                ServiceResponse<BaseBeanVO> serviceResponse = new ServiceResponse<>();
+                serviceResponse.setRetMessage(msg);
+                serviceResponse.setRetCode("500");
+                serviceResponse.setRetContent(null);
+                returnData(response,serviceResponse);
+                return false;
+            }
+        }
         return true;
     }
+
+
+
+    private void returnData(HttpServletResponse response, ServiceResponse<BaseBeanVO> data){
+        PrintWriter writer = null;
+        response.setCharacterEncoding("UTF-8");
+//        response.setContentType("text/html; charset=utf-8");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setHeader("Date",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss").format(new Date()));
+        try {
+            writer = response.getWriter();
+            writer.print(GsonUtil.toJson(data));
+        } catch (IOException e) {
+            logger.error("response error",e);
+        } finally {
+            if (writer != null)
+                writer.close();
+        }
+    }
+
+
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {

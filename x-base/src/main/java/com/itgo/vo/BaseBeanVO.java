@@ -162,4 +162,8 @@ public class BaseBeanVO implements Serializable {
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
+
+    public String check(){
+        return "ok";
+    }
 }

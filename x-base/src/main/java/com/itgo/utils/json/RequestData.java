@@ -1,5 +1,7 @@
 package com.itgo.utils.json;
 
+import com.itgo.vo.BaseBeanVO;
+
 import java.io.Serializable;
 
 /**
@@ -12,7 +14,7 @@ import java.io.Serializable;
  * @date 2019/4/8 9:04
  * @description
  */
-public class RequestData<T> implements Serializable {
+public class RequestData<T extends BaseBeanVO> implements Serializable {
 
     /**
      * 请求数据
