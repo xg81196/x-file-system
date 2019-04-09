@@ -11,6 +11,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -26,9 +27,10 @@ import org.springframework.context.annotation.Import;
 @EnableEurekaClient
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"com.itgo.service.base.api"})
-@ComponentScan(basePackages = {"com.itgo.web","com.itgo.utils","com.itgo.bean","com.itgo.aop"})
+@ComponentScan(basePackages = {"com.itgo.web","com.itgo.utils","com.itgo.bean","com.itgo"})
 @ServletComponentScan
 @Import(WebApplicationConfig.class)
+@EnableAspectJAutoProxy(exposeProxy=true)
 public class WebApplication {
 
     private static Logger logger = LoggerFactory.getLogger(WebApplication.class);
