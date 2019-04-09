@@ -37,15 +37,9 @@ public class PlatformInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("<===========来自客户端 {"+IpUtil.getIp()+"}的访问===========>");
+        logger.info("<===========来自客户端 {"+IpUtil.getIp()+"} 的访问===========>");
         logger.info("<===========PlatformInterceptor.perHandle===========>");
         Method method = ((HandlerMethod) handler).getMethod();
-        Parameter[] parameters = method.getParameters();
-        for (Parameter parameter : parameters) {
-
-        }
-
-
 //        Class<RequestData>[] types = (Class<RequestData>[]) method.getParameterTypes();
 //        for (Class<RequestData> type : types) {
 //            Field field = type.getDeclaredField("reqData");
